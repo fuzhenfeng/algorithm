@@ -1,10 +1,6 @@
 package org.example.algorithm;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -15,20 +11,11 @@ public class FileOperation {
         if (filename == null || words == null) {
             return false;
         }
-        URL resource = FileOperation.class.getClassLoader().getResource(filename);
+        InputStream resourceAsStream = FileOperation.class.getClassLoader().getResourceAsStream(filename);
 
         Scanner scanner;
-        try {
-            File file = new File(resource.getPath());
-            if (file.exists()) {
-                FileInputStream fis = new FileInputStream(file);
-                scanner = new Scanner(new BufferedInputStream(fis), "UTF-8");
-                scanner.useLocale(Locale.ENGLISH);
-            } else
-                return false;
-        } catch (IOException ioe) {
-            return false;
-        }
+        scanner = new Scanner(new BufferedInputStream(resourceAsStream), "UTF-8");
+        scanner.useLocale(Locale.ENGLISH);
 
         if (scanner.hasNextLine()) {
             String contents = scanner.useDelimiter("\\A").next();
